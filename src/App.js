@@ -86,7 +86,7 @@ class NoteAppContainer extends React.Component {
 
   componentWillMount() {
     this.unsubscribe = this.props.store.subscribe(() =>
-      this.setState(this.props.store.getState());
+      this.setState(this.props.store.getState())
     )
   }
 
