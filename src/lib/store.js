@@ -27,7 +27,7 @@ export const createStore = () => {
           subscribers.splice(index, 1);
         }
       };
-    },
+    }
   };
 
   store.dispatch({type: '@@redux/INIT'});

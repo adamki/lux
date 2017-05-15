@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 class Provider extends React.Component {
-  getChildContext() {
+  getChildContext () {
     return {
       store: this.props.store
     };

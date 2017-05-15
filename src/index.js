@@ -7,6 +7,6 @@ import { reducer } from './lib/reducers';
 const store = createStore(reducer);
 
 ReactDOM.render(
-  <NoteAppContainer store={store}/>,
+  <NoteAppContainer store={store} />,
   document.getElementById('root')
 );
