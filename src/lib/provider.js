@@ -1,25 +1,25 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class Provider extends React.Component {
-  getChildContext () {
+export class Provider extends React.Component {
+  getChildContext() {
     return {
       store: this.props.store
     };
   }
-
   render() {
-    return this.props.children
+    return this.props.children;
   }
 }
 
-Provider.getChildContextTypes = {
+Provider.childContextTypes = {
   store: PropTypes.object
 };
 
-const connect = (
+export const connect = (
   mapStateToProps = () => ({}),
   mapDispatchToProps = () => ({})
-) => (Component) => {
+) => Component => {
   class Connected extends React.Component {
     onStoreOrPropsChange(props) {
       const {store} = this.context;
@@ -34,7 +34,9 @@ const connect = (
     componentWillMount() {
       const {store} = this.context;
       this.onStoreOrPropsChange(this.props);
-      this.unsubscribe = store.subscribe(() => this.onStoreOrPropsChange(this.props));
+      this.unsubscribe = store.subscribe(() =>
+        this.onStoreOrPropsChange(this.props)
+      );
     }
     componentWillReceiveProps(nextProps) {
       this.onStoreOrPropsChange(nextProps);
@@ -45,7 +47,12 @@ const connect = (
     render() {
       return <Component {...this.props} {...this.state}/>;
     }
+  }
+
+  Connected.contextTypes = {
+    store: PropTypes.object
   };
 
   return Connected;
 };
+

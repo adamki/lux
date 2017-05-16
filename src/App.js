@@ -2,6 +2,7 @@
 import React from 'react';
 import './App.css';
 import * as types from './lib/actions';
+import { connect } from './lib/provider';
 
 const NoteEditor = ({note, onChangeNote, onCloseNote}) => (
   <div>
@@ -67,71 +68,50 @@ const NoteApp = ({
           onCloseNote={onCloseNote}
         /> :
         <div>
-          <NoteList notes={notes} onOpenNote={onOpenNote} />
-          <button onClick={onAddNote}>New Note</button>
-        </div>
+        <NoteList
+          notes={notes}
+          onOpenNote={onOpenNote}
+        />
+        {
+          <button
+            className="editor-button"
+            onClick={onAddNote}
+          >
+            New Note
+          </button>
+        }
+      </div>
     }
   </div>
 );
 
-class NoteAppContainer extends React.Component {
-  constructor(props) {
-    super();
-    this.state = props.store.getState();
-    this.onAddNote = this.onAddNote.bind(this);
-    this.onChangeNote = this.onChangeNote.bind(this);
-    this.onOpenNote = this.onOpenNote.bind(this);
-    this.onCloseNote = this.onCloseNote.bind(this);
-  }
+const mapStateToProps = state => ({
+  notes: state.notes,
+  openNoteId: state.openNoteId
+});
 
-  componentWillMount() {
-    this.unsubscribe = this.props.store.subscribe(() =>
-      this.setState(this.props.store.getState())
-    )
-  }
+const mapDispatchToProps = dispatch => ({
+  onAddNote: () => dispatch({
+    type: types.CREATE_NOTE
+  }),
+  onChangeNote: (id, content) => dispatch({
+    type: types.UPDATE_NOTE,
+    id,
+    content
+  }),
+  onOpenNote: (id) => dispatch({
+    type: types.OPEN_NOTE,
+    id
+  }),
+  onCloseNote: () => dispatch({
+    type: types.CLOSE_NOTE
+  })
+});
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+const App = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoteApp);
 
-  onAddNote() {
-    this.props.store.dispatch({
-      type: types.ADD_NOTE
-    });
-  }
+export default App;
 
-  onChangeNote(id, content) {
-    this.props.store.dispatch({
-      type: types.UPDATE_NOTE,
-      id,
-      content
-    });
-  }
-
-  onOpenNote(id) {
-    this.props.store.dispatch({
-      type: types.OPEN_NOTE,
-      id
-    });
-  }
-
-  onCloseNote() {
-    this.props.store.dispatch({
-      type: types.CLOSE_NOTE
-    });
-  }
-
-  render() {
-    return (
-      <NoteApp
-        {...this.state}
-        onAddNote={this.onAddNote}
-        onChangeNote={this.onChangeNote}
-        onOpenNote={this.onOpenNote}
-        onCloseNote={this.onCloseNote}
-      />
-    )
-  }
-}
-
-export default NoteAppContainer;

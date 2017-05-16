@@ -17,4 +17,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # JetBrains webstorm
-.idea
+.idea/
+
+# tern
+.tern-port
