@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import * as types from './lib/actions';
 import { connect } from './lib/provider';
+import { fakeApi } from './api/fakeApi';
 
 const NoteEditor = ({note, onChangeNote, onCloseNote}) => (
   <div>
@@ -91,9 +92,20 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onAddNote: () => dispatch({
-    type: types.CREATE_NOTE
-  }),
+  onAddNote: () => dispatch(
+    ({dispatch}) => {
+      dispatch({
+        type: types.CREATE_NOTE
+      });
+      fakeApi.createNote()
+        .then(({id}) => {
+          dispatch({
+            type: types.CREATE_NOTE,
+            id
+          });
+        });
+    }
+  ),
   onChangeNote: (id, content) => dispatch({
     type: types.UPDATE_NOTE,
     id,

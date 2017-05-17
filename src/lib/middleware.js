@@ -7,11 +7,11 @@ export const applyMiddleware = (...middlewares) => store => {
     return middlewares[0];
   }
   const boundMiddlewares = middlewares.map(middleware =>
-                                           middleware(store)
-                                          );
+    middleware(store)
+  );
   return boundMiddlewares.reduce((a, b) =>
-                                 next => a(b(next))
-                                );
+    next => a(b(next))
+  );
 };
 
 export const delayMiddleware = () => next => action => {
@@ -27,3 +27,11 @@ export const loggingMiddleware = ({getState}) => next => action => {
   console.info('after', getState());
   return result;
 };
+
+export const thunkMiddleware = ({dispatch, getState}) => next => action => {
+  if (typeof action === 'function') {
+    return action({dispatch, getState});
+  }
+  return next(action);
+};
+

@@ -1,4 +1,6 @@
+//@flow
 const validateAction = action => {
+  console.log('djfkldsjl', action);
   if (!action || typeof action !== 'object' || Array.isArray(action)) {
     throw new Error('Action must be an object!');
   }
