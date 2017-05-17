@@ -1,27 +1,33 @@
 //@flow
 import * as types from './actions';
+import fakeApi from '../api/fakeApi';
 
 const initialState = {
-  nextNoteId: 1,
   notes: {},
-  openNoteId: null
+  openNoteId: null,
+  setLoading: false
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
   case types.CREATE_NOTE: {
-    const id = state.nextNoteId;
+    if (!action.id) {
+      return {
+        ...state,
+        setLoading: true
+      };
+    }
     const newNote = {
-      id,
+      id: action.id,
       content: ''
     };
     return {
       ...state,
-      nextNoteId: id + 1,
-      openNoteId: id,
+      setLoading: false,
+      openNoteId: action.id,
       notes: {
         ...state.notes,
-        [id]: newNote
+        [action.id]: newNote
       }
     };
   }

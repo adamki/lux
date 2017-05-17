@@ -7,11 +7,12 @@ import { createStore } from './lib/store';
 import { reducer } from './lib/reducers';
 import { loggingMiddleware,
          delayMiddleware,
-         applyMiddleware } from './lib/middleware';
+         applyMiddleware,
+         thunkMiddleware } from './lib/middleware';
 
 const store = createStore(reducer, applyMiddleware(
-  delayMiddleware,
-  loggingMiddleware
+  loggingMiddleware,
+  thunkMiddleware
 ));
 
 ReactDOM.render(
