@@ -1,3 +1,4 @@
+//@flow
 export const applyMiddleware = (...middlewares) => store => {
   if (middlewares.length === 0) {
     return dispatch => dispatch;
