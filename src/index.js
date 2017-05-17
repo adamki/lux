@@ -6,7 +6,6 @@ import { Provider } from './lib/provider';
 import { createStore } from './lib/store';
 import { reducer } from './lib/reducers';
 import { loggingMiddleware,
-         delayMiddleware,
          applyMiddleware,
          thunkMiddleware } from './lib/middleware';
 

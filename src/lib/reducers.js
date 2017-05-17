@@ -1,6 +1,5 @@
 //@flow
 import * as types from './actions';
-import fakeApi from '../api/fakeApi';
 
 const initialState = {
   notes: {},

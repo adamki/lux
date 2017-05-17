@@ -91,21 +91,23 @@ const mapStateToProps = state => ({
   openNoteId: state.openNoteId
 });
 
-const mapDispatchToProps = dispatch => ({
-  onAddNote: () => dispatch(
-    ({dispatch}) => {
-      dispatch({
-        type: types.CREATE_NOTE
-      });
-      fakeApi.createNote()
-        .then(({id}) => {
-          dispatch({
-            type: types.CREATE_NOTE,
-            id
-          });
+const createNote = () => {
+  return ({dispatch}) => {
+    dispatch({
+      type: types.CREATE_NOTE
+    });
+    fakeApi.createNote()
+      .then(({id}) => {
+        dispatch({
+          type: types.CREATE_NOTE,
+          id
         });
-    }
-  ),
+      });
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onAddNote: () => dispatch(createNote()),
   onChangeNote: (id, content) => dispatch({
     type: types.UPDATE_NOTE,
     id,
