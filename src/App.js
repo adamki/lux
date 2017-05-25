@@ -17,7 +17,6 @@ const NoteEditor = ({note, onChangeNote, onCloseNote}) => (
       />
     </div>
     <button className="editor-button" onClick={onCloseNote}>Close</button>
-
   </div>
 );
 
@@ -128,4 +127,3 @@ const App = connect(
 )(NoteApp);
 
 export default App;
-

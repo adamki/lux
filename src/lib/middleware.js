@@ -34,4 +34,3 @@ export const thunkMiddleware = ({dispatch, getState}) => next => action => {
   }
   return next(action);
 };
-
