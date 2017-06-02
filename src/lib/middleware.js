@@ -1,5 +1,5 @@
-//@flow
-export const applyMiddleware = (...middlewares) => store => {
+// @flow
+export const applyMiddleware = (...middlewares) => (store) => {
   if (middlewares.length === 0) {
     return dispatch => dispatch;
   }
@@ -7,20 +7,20 @@ export const applyMiddleware = (...middlewares) => store => {
     return middlewares[0];
   }
   const boundMiddlewares = middlewares.map(middleware =>
-    middleware(store)
+    middleware(store),
   );
   return boundMiddlewares.reduce((a, b) =>
-    next => a(b(next))
+    next => a(b(next)),
   );
 };
 
-export const delayMiddleware = () => next => action => {
+export const delayMiddleware = () => next => (action) => {
   setTimeout(() => {
     next(action);
   }, 1000);
 };
 
-export const loggingMiddleware = ({getState}) => next => action => {
+export const loggingMiddleware = ({ getState }) => next => (action) => {
   console.info('before', getState());
   console.info('action', action);
   const result = next(action);
@@ -28,9 +28,9 @@ export const loggingMiddleware = ({getState}) => next => action => {
   return result;
 };
 
-export const thunkMiddleware = ({dispatch, getState}) => next => action => {
+export const thunkMiddleware = ({ dispatch, getState }) => next => (action) => {
   if (typeof action === 'function') {
-    return action({dispatch, getState});
+    return action({ dispatch, getState });
   }
   return next(action);
 };

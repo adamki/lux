@@ -1,11 +1,11 @@
-//@flow
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 
 export class Provider extends React.Component {
   getChildContext() {
     return {
-      store: this.props.store
+      store: this.props.store,
     };
   }
   render() {
@@ -14,29 +14,29 @@ export class Provider extends React.Component {
 }
 
 Provider.childContextTypes = {
-  store: PropTypes.object
+  store: PropTypes.object,
 };
 
 export const connect = (
   mapStateToProps = () => ({}),
-  mapDispatchToProps = () => ({})
-) => Component => {
+  mapDispatchToProps = () => ({}),
+) => (Component) => {
   class Connected extends React.Component {
     onStoreOrPropsChange(props) {
-      const {store} = this.context;
+      const { store } = this.context;
       const state = store.getState();
       const stateProps = mapStateToProps(state, props);
       const dispatchProps = mapDispatchToProps(store.dispatch, props);
       this.setState({
         ...stateProps,
-        ...dispatchProps
+        ...dispatchProps,
       });
     }
     componentWillMount() {
-      const {store} = this.context;
+      const { store } = this.context;
       this.onStoreOrPropsChange(this.props);
       this.unsubscribe = store.subscribe(() =>
-        this.onStoreOrPropsChange(this.props)
+        this.onStoreOrPropsChange(this.props),
       );
     }
     componentWillReceiveProps(nextProps) {
@@ -46,12 +46,12 @@ export const connect = (
       this.unsubscribe();
     }
     render() {
-      return <Component {...this.props} {...this.state}/>;
+      return <Component {...this.props} {...this.state} />;
     }
   }
 
   Connected.contextTypes = {
-    store: PropTypes.object
+    store: PropTypes.object,
   };
 
   return Connected;

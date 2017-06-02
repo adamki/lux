@@ -1,5 +1,5 @@
-//@flow
-const validateAction = action => {
+// @flow
+const validateAction = (action) => {
   if (!action || typeof action !== 'object' || Array.isArray(action)) {
     throw new Error('Action must be an object!');
   }
@@ -11,7 +11,7 @@ const validateAction = action => {
 export const createStore = (reducer, middleware) => {
   let state;
   const subscribers = [];
-  const coreDispatch = action => {
+  const coreDispatch = (action) => {
     validateAction(action);
     state = reducer(state, action);
     subscribers.forEach(handler => handler());
@@ -20,7 +20,7 @@ export const createStore = (reducer, middleware) => {
   const store = {
     dispatch: coreDispatch,
     getState,
-    subscribe: handler => {
+    subscribe: (handler) => {
       subscribers.push(handler);
       return () => {
         const index = subscribers.indexOf(handler);
@@ -28,15 +28,15 @@ export const createStore = (reducer, middleware) => {
           subscribers.splice(index, 1);
         }
       };
-    }
+    },
   };
   if (middleware) {
     const dispatch = action => store.dispatch(action);
     store.dispatch = middleware({
       dispatch,
-      getState
+      getState,
     })(coreDispatch);
   }
-  coreDispatch({type: '@@redux/INIT'});
+  coreDispatch({ type: '@@redux/INIT' });
   return store;
 };

@@ -1,11 +1,10 @@
-//@flow
-import React from 'react';
+// @flow
 import './App.css';
 import * as types from './lib/actions';
 import { connect } from './lib/provider';
 import { fakeApi } from './api/fakeApi';
 
-const NoteEditor = ({note, onChangeNote, onCloseNote}) => (
+const NoteEditor = ({ note, onChangeNote, onCloseNote }) => (
   <div>
     <div>
       <textarea
@@ -20,7 +19,7 @@ const NoteEditor = ({note, onChangeNote, onCloseNote}) => (
   </div>
 );
 
-const NoteTitle = ({note}) => {
+const NoteTitle = ({ note }) => {
   const title = note.content.split('\n')[0].replace(/^\s+|\s+$/g, '');
   if (title === '') {
     return <i>Untitled</i>;
@@ -29,7 +28,7 @@ const NoteTitle = ({note}) => {
   return <span>{title}</span>;
 };
 
-const NoteLink = ({note, onOpenNote}) => (
+const NoteLink = ({ note, onOpenNote }) => (
   <li className="note-list-item">
     <a href="#" onClick={() => onOpenNote(note.id)}>
       <NoteTitle note={note} />
@@ -37,15 +36,15 @@ const NoteLink = ({note, onOpenNote}) => (
   </li>
 );
 
-const NoteList = ({notes, onOpenNote}) => (
+const NoteList = ({ notes, onOpenNote }) => (
   <ul className="note-list">
     {
       Object.keys(notes).map(id =>
-        <NoteLink
+        (<NoteLink
           key={id}
           note={notes[id]}
           onOpenNote={onOpenNote}
-        />
+        />),
       )
     }
   </ul>
@@ -57,7 +56,7 @@ const NoteApp = ({
   onAddNote,
   onChangeNote,
   onOpenNote,
-  onCloseNote
+  onCloseNote,
 }) => (
   <div>
     {
@@ -68,41 +67,39 @@ const NoteApp = ({
           onCloseNote={onCloseNote}
         /> :
         <div>
-        <NoteList
-          notes={notes}
-          onOpenNote={onOpenNote}
-        />
-        {
-          <button
-            className="editor-button"
-            onClick={onAddNote}
-          >
+          <NoteList
+            notes={notes}
+            onOpenNote={onOpenNote}
+          />
+          {
+            <button
+              className="editor-button"
+              onClick={onAddNote}
+            >
             New Note
           </button>
         }
-      </div>
+        </div>
     }
   </div>
 );
 
 const mapStateToProps = state => ({
   notes: state.notes,
-  openNoteId: state.openNoteId
+  openNoteId: state.openNoteId,
 });
 
-const createNote = () => {
-  return ({dispatch}) => {
-    dispatch({
-      type: types.CREATE_NOTE
-    });
-    fakeApi.createNote()
-      .then(({id}) => {
+const createNote = () => ({ dispatch }) => {
+  dispatch({
+    type: types.CREATE_NOTE,
+  });
+  fakeApi.createNote()
+      .then(({ id }) => {
         dispatch({
           type: types.CREATE_NOTE,
-          id
+          id,
         });
       });
-  };
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -110,20 +107,20 @@ const mapDispatchToProps = dispatch => ({
   onChangeNote: (id, content) => dispatch({
     type: types.UPDATE_NOTE,
     id,
-    content
+    content,
   }),
-  onOpenNote: (id) => dispatch({
+  onOpenNote: id => dispatch({
     type: types.OPEN_NOTE,
-    id
+    id,
   }),
   onCloseNote: () => dispatch({
-    type: types.CLOSE_NOTE
-  })
+    type: types.CLOSE_NOTE,
+  }),
 });
 
 const App = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(NoteApp);
 
 export default App;
