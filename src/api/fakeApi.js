@@ -1,9 +1,10 @@
 const createApi = () => {
-  let _id = 0;
+  let id = 0;
+
   const createNote = () => new Promise(resolve => setTimeout(() => {
-    _id++;
+    id += 1;
     resolve({
-      id: `${_id}`,
+      id: `${id}`,
     });
   }, 500));
   return {
@@ -11,4 +12,5 @@ const createApi = () => {
   };
 };
 
-export const fakeApi = createApi();
+const fakeApi = createApi();
+export default fakeApi;

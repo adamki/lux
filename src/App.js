@@ -1,15 +1,15 @@
 // @flow
+import React from 'react';
 import './App.css';
 import * as types from './lib/actions';
 import { connect } from './lib/provider';
-import { fakeApi } from './api/fakeApi';
+import fakeApi from './api/fakeApi';
 
 const NoteEditor = ({ note, onChangeNote, onCloseNote }) => (
   <div>
     <div>
       <textarea
         className="editor-content"
-        autoFocus
         value={note.content}
         onChange={event => onChangeNote(note.id, event.target.value)}
         rows={10} cols={80}
@@ -84,11 +84,6 @@ const NoteApp = ({
   </div>
 );
 
-const mapStateToProps = state => ({
-  notes: state.notes,
-  openNoteId: state.openNoteId,
-});
-
 const createNote = () => ({ dispatch }) => {
   dispatch({
     type: types.CREATE_NOTE,
@@ -101,6 +96,11 @@ const createNote = () => ({ dispatch }) => {
         });
       });
 };
+
+const mapStateToProps = state => ({
+  notes: state.notes,
+  openNoteId: state.openNoteId,
+});
 
 const mapDispatchToProps = dispatch => ({
   onAddNote: () => dispatch(createNote()),
