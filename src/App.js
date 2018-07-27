@@ -82,7 +82,7 @@ const NoteApp = ({
         </div>
     }
   </div>
-);
+)
 
 const createNote = () => ({ dispatch }) => {
   dispatch({
