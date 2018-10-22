@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import './App.css';
 import * as types from './lib/actions';
